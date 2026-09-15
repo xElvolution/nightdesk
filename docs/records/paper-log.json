@@ -1,0 +1,184 @@
+{
+  "generatedAt": "2026-09-15T20:50:34.748Z",
+  "venue": "bitget",
+  "feeBps": 4,
+  "planSummary": "One tap cuts overnight risk: sell 44 rNVDA. 17.5h you do not sit. 117 USDT of panic fees left on the table.",
+  "receipts": [
+    {
+      "id": "rcpt_99f5c71f",
+      "hash": "99f5c71f",
+      "ts": 1789505434728,
+      "symbol": "rNVDA",
+      "kind": "sell",
+      "qty": 44,
+      "limitPrice": 178.23,
+      "notional": 7842.12,
+      "status": "preview",
+      "reason": "rNVDA is 24.3% of equity. Cap is 12%. Mega-cap tech cluster is above 50%. Trim the largest lot.",
+      "agents": [
+        "research",
+        "sentiment",
+        "risk",
+        "execution"
+      ],
+      "riskVerdict": "pass"
+    },
+    {
+      "id": "rcpt_40f7f810",
+      "hash": "40f7f810",
+      "ts": 1789505434728,
+      "symbol": "rAAPL",
+      "kind": "sell",
+      "qty": 8,
+      "limitPrice": 228.21,
+      "notional": 1825.68,
+      "status": "rejected",
+      "reason": "rAAPL is 14.6% of equity. Cap is 12%.",
+      "agents": [
+        "research",
+        "sentiment",
+        "risk",
+        "execution"
+      ],
+      "riskVerdict": "block"
+    },
+    {
+      "id": "rcpt_40f6bcb3",
+      "hash": "40f6bcb3",
+      "ts": 1789505434728,
+      "symbol": "rTSLA",
+      "kind": "sell",
+      "qty": 26,
+      "limitPrice": 249.81,
+      "notional": 6495.06,
+      "status": "rejected",
+      "reason": "rTSLA is 22.0% of equity. Cap is 12%. Earnings in 8.5h. Cut overnight risk. Do not add.",
+      "agents": [
+        "research",
+        "sentiment",
+        "risk",
+        "execution"
+      ],
+      "riskVerdict": "block"
+    },
+    {
+      "id": "rcpt_9380708d",
+      "hash": "9380708d",
+      "ts": 1789505434728,
+      "symbol": "rMSFT",
+      "kind": "sell",
+      "qty": 1,
+      "limitPrice": 428.28000000000003,
+      "notional": 428.28000000000003,
+      "status": "rejected",
+      "reason": "rMSFT is 12.4% of equity. Cap is 12%.",
+      "agents": [
+        "research",
+        "sentiment",
+        "risk",
+        "execution"
+      ],
+      "riskVerdict": "block"
+    },
+    {
+      "id": "rcpt_2d0af491",
+      "hash": "2d0af491",
+      "ts": 1789505434728,
+      "symbol": "rAMZN",
+      "kind": "hold",
+      "qty": 0,
+      "limitPrice": 0,
+      "notional": 0,
+      "status": "hold",
+      "reason": "HOLD 0 rAMZN. Inside gates. No overnight trade.",
+      "agents": [
+        "research",
+        "sentiment",
+        "risk",
+        "execution"
+      ],
+      "riskVerdict": "block"
+    }
+  ],
+  "fills": [
+    {
+      "id": "fill_ord_rNVDA",
+      "orderId": "ord_rNVDA",
+      "symbol": "rNVDA",
+      "side": "sell",
+      "qty": 44,
+      "price": 178.23,
+      "notional": 7842.12,
+      "feeUsdt": 3.136848,
+      "ts": 1789505434748
+    }
+  ],
+  "account": {
+    "cashUsdt": 20238.983152,
+    "equityUsdt": 62326.863152000005,
+    "realizedPnl": 696.5199999999993,
+    "unrealizedPnl": 2450.8800000000006,
+    "startingCash": 62331.76,
+    "positions": [
+      {
+        "symbol": "rNVDA",
+        "qty": 41,
+        "avgPrice": 162.4,
+        "marketValue": 7309.070000000001,
+        "unrealizedPnl": 650.6700000000002
+      },
+      {
+        "symbol": "rAAPL",
+        "qty": 40,
+        "avgPrice": 214.1,
+        "marketValue": 9130.4,
+        "unrealizedPnl": 566.3999999999999
+      },
+      {
+        "symbol": "rTSLA",
+        "qty": 55,
+        "avgPrice": 238,
+        "marketValue": 13740.650000000001,
+        "unrealizedPnl": 650.6500000000007
+      },
+      {
+        "symbol": "rMSFT",
+        "qty": 18,
+        "avgPrice": 401.2,
+        "marketValue": 7709.94,
+        "unrealizedPnl": 488.3399999999999
+      },
+      {
+        "symbol": "rAMZN",
+        "qty": 22,
+        "avgPrice": 186.5,
+        "marketValue": 4197.82,
+        "unrealizedPnl": 94.82000000000005
+      }
+    ],
+    "dayPnl": -4.89684799999668,
+    "highWater": 62331.76,
+    "drawdownPct": 0.007856104175458354
+  },
+  "audit": [
+    {
+      "id": "aud_6b36ecf1",
+      "ts": 1789505434748,
+      "actor": "system",
+      "action": "desk.open",
+      "detail": "Ledger opened.",
+      "hash": "6b36ecf1",
+      "prevHash": "genesis"
+    },
+    {
+      "id": "aud_86305c1d",
+      "ts": 1789505434748,
+      "actor": "execution",
+      "action": "fill",
+      "symbol": "rNVDA",
+      "detail": "sell 44 rNVDA @ 178.23 receipt 99f5c71f",
+      "hash": "86305c1d",
+      "prevHash": "6b36ecf1"
+    }
+  ]
+}

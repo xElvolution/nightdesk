@@ -5,12 +5,13 @@ import type { ReactNode, CSSProperties } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/** Hero entrance: opacity 0 to 1, y 24 to 0, optional scale .98 to 1, 600-800ms */
 export function FadeIn({
   children,
   className,
   delay = 0,
-  y = 16,
-  blur = true,
+  y = 24,
+  scale = false,
   style,
   ...rest
 }: {
@@ -18,7 +19,7 @@ export function FadeIn({
   className?: string;
   delay?: number;
   y?: number;
-  blur?: boolean;
+  scale?: boolean;
   style?: CSSProperties;
 } & MotionProps) {
   const reduce = useReducedMotion();
@@ -29,9 +30,9 @@ export function FadeIn({
       initial={
         reduce
           ? false
-          : { opacity: 0, y, filter: blur ? "blur(8px)" : "blur(0px)" }
+          : { opacity: 0, y, ...(scale ? { scale: 0.98 } : {}) }
       }
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      animate={{ opacity: 1, y: 0, ...(scale ? { scale: 1 } : {}) }}
       transition={{ duration: 0.7, delay, ease }}
       {...rest}
     >
@@ -40,6 +41,66 @@ export function FadeIn({
   );
 }
 
+/** Hero stagger parent: children delay index * 0.05 */
+export function HeroStagger({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial="hidden"
+      animate="show"
+      variants={{
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: reduce ? 0 : 0.05,
+            delayChildren: 0.08,
+          },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function HeroItem({
+  children,
+  className,
+  scale = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  scale?: boolean;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      variants={{
+        hidden: reduce
+          ? { opacity: 1 }
+          : { opacity: 0, y: 24, ...(scale ? { scale: 0.98 } : {}) },
+        show: {
+          opacity: 1,
+          y: 0,
+          ...(scale ? { scale: 1 } : {}),
+          transition: { duration: 0.72, ease },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Scroll reveal: whileInView once */
 export function Reveal({
   children,
   className,
@@ -55,10 +116,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={reduce ? false : { opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.65, delay, ease }}
+      transition={{ duration: 0.7, delay, ease }}
     >
       {children}
     </motion.div>
@@ -98,7 +159,7 @@ export function Stagger({
 export function StaggerItem({
   children,
   className,
-  y = 20,
+  y = 24,
 }: {
   children: ReactNode;
   className?: string;
@@ -109,12 +170,11 @@ export function StaggerItem({
     <motion.div
       className={className}
       variants={{
-        hidden: reduce ? { opacity: 1 } : { opacity: 0, y, filter: "blur(6px)" },
+        hidden: reduce ? { opacity: 1 } : { opacity: 0, y },
         show: {
           opacity: 1,
           y: 0,
-          filter: "blur(0px)",
-          transition: { duration: 0.55, ease },
+          transition: { duration: 0.65, ease },
         },
       }}
     >
@@ -123,6 +183,7 @@ export function StaggerItem({
   );
 }
 
+/** Hover card: translateY(-4px) */
 export function LiftCard({
   children,
   className,
@@ -138,10 +199,10 @@ export function LiftCard({
       whileHover={{
         y: -4,
         boxShadow: glow
-          ? "0 0 0 1px rgba(77,232,255,0.18), 0 0 36px rgba(77,232,255,0.1), 0 16px 40px rgba(0,0,0,0.4)"
-          : "0 0 0 1px rgba(255,255,255,0.1), 0 16px 40px rgba(0,0,0,0.4)",
+          ? "0 0 0 1px rgba(77,232,255,0.18), 0 0 36px rgba(77,232,255,0.1), 0 20px 48px rgba(0,0,0,0.45)"
+          : "0 0 0 1px rgba(255,255,255,0.1), 0 20px 48px rgba(0,0,0,0.45)",
       }}
-      transition={{ type: "spring", stiffness: 380, damping: 28 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
     >
       {children}
     </motion.div>

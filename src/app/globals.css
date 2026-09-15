@@ -2,13 +2,14 @@
 
 :root {
   --bg: #07090f;
-  --surface: #0e1420;
-  --surface-2: #121a28;
+  --bg-elevated: #0b0e13;
+  --surface: #121821;
+  --surface-2: #171e2a;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.14);
-  --ink: #e8eef8;
+  --ink: #eef2f7;
   --mute: #8b95a8;
-  --faint: #5a6478;
+  --faint: #5c6678;
   --accent: #4de8ff;
   --accent-dim: rgba(77, 232, 255, 0.12);
   --gain: #22c55e;
@@ -19,6 +20,7 @@
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-bge: var(--bg-elevated);
   --color-surface: var(--surface);
   --color-surface2: var(--surface-2);
   --color-panel: var(--surface);
@@ -50,7 +52,7 @@ body {
 body {
   font-family: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "ss01" on, "cv11" on;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.011em;
 }
 
 * {
@@ -84,14 +86,14 @@ body {
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px;
 }
 
 .card-glow {
   box-shadow:
-    0 0 0 1px rgba(77, 232, 255, 0.1),
-    0 0 28px rgba(77, 232, 255, 0.06),
-    0 12px 40px rgba(0, 0, 0, 0.35);
+    0 0 0 1px rgba(77, 232, 255, 0.12),
+    0 0 40px rgba(77, 232, 255, 0.07),
+    0 24px 64px rgba(0, 0, 0, 0.45);
 }
 
 .btn-primary {
@@ -99,12 +101,12 @@ body {
   color: #041018;
   font-weight: 600;
   border-radius: 12px;
-  transition: filter 120ms ease, box-shadow 120ms ease;
+  transition: filter 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
 .btn-primary:hover {
-  filter: brightness(1.06);
-  box-shadow: 0 0 24px rgba(77, 232, 255, 0.28);
+  filter: brightness(1.05);
+  box-shadow: 0 0 28px rgba(77, 232, 255, 0.32);
 }
 
 .btn-primary:disabled {
@@ -117,12 +119,13 @@ body {
   border: 1px solid var(--line-strong);
   border-radius: 12px;
   color: var(--ink);
-  transition: background 120ms ease, border-color 120ms ease;
+  background: transparent;
+  transition: background 140ms ease, border-color 140ms ease;
 }
 
 .btn-ghost:hover {
   background: var(--surface-2);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .side-buy {
@@ -159,4 +162,12 @@ body {
 .desk-scroll::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
 }

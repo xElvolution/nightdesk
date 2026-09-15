@@ -23,6 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setOpen(false);
@@ -40,23 +41,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
+      menuBtnRef.current?.focus();
     };
   }, [open]);
 
   return (
     <div className="flex min-h-screen bg-bg">
-      {/* Desktop rail */}
-      <aside className="sticky top-0 hidden h-screen w-[68px] shrink-0 flex-col border-r border-line bg-surface lg:flex xl:w-[200px]">
+      {/* Desktop sidebar: app routes only */}
+      <aside className="sticky top-0 hidden h-screen w-[64px] shrink-0 flex-col border-r border-line bg-surface lg:flex xl:w-[196px]">
         <Link
           href="/"
-          className="flex h-14 items-center gap-2.5 border-b border-line px-3 xl:px-4"
+          className="flex h-12 items-center gap-2.5 border-b border-line px-3 xl:px-4"
         >
-          <LogoMark size={26} />
+          <LogoMark size={24} />
           <span className="hidden text-[11px] font-semibold tracking-[0.16em] text-ink xl:inline">
             NIGHTDESK
           </span>
         </Link>
-        <nav className="flex flex-1 flex-col gap-0.5 p-2">
+        <nav className="flex flex-1 flex-col gap-0.5 p-1.5">
           {LINKS.map((l) => {
             const on = path === l.href || path.startsWith(l.href + "/");
             const Icon = l.icon;
@@ -66,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 href={l.href}
                 title={l.label}
                 className={cls(
-                  "group flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-[12px] transition-colors",
+                  "group flex items-center gap-3 rounded-lg px-2.5 py-2 text-[12px] transition-colors",
                   on
                     ? "bg-accent/10 text-accent shadow-[inset_0_0_0_1px_rgba(77,232,255,0.18)]"
                     : "text-mute hover:bg-surface2 hover:text-ink",
@@ -84,11 +86,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur-xl">
-          <div className="flex h-12 items-center gap-3 px-3 lg:px-4">
+        <header className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur-xl">
+          <div className="flex h-11 items-center gap-3 px-3 lg:px-4">
             <button
+              ref={menuBtnRef}
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-line text-ink lg:hidden"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-line text-ink lg:hidden"
               aria-label={open ? "Close navigation" : "Open navigation"}
               aria-expanded={open}
               aria-controls={panelId}
@@ -97,8 +100,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <Hamburger open={open} />
             </button>
             <Link href="/" className="flex items-center gap-2 lg:hidden">
-              <LogoMark size={24} />
-              <span className="text-[11px] font-semibold tracking-[0.14em]">NIGHTDESK</span>
+              <LogoMark size={22} />
+              <span className="text-[11px] font-semibold tracking-[0.14em]">
+                NIGHTDESK
+              </span>
             </Link>
             <div className="ml-auto flex items-center gap-3">
               <div className="hidden sm:block">
@@ -106,9 +111,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
               <Link
                 href="/"
-                className="hidden rounded-lg px-2.5 py-1.5 text-[11px] text-mute hover:text-ink sm:inline"
+                className="hidden rounded-lg px-2 py-1 text-[11px] text-mute hover:text-ink sm:inline"
               >
-                Marketing site
+                Marketing
               </Link>
             </div>
           </div>
@@ -128,7 +133,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           >
             <button
               type="button"
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/65 backdrop-blur-sm"
               aria-label="Close navigation backdrop"
               onClick={() => setOpen(false)}
             />
@@ -137,28 +142,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               role="dialog"
               aria-modal="true"
               aria-label="App navigation"
-              className="absolute left-0 top-0 flex h-full w-[min(100%,300px)] flex-col border-r border-line bg-surface"
+              className="absolute left-0 top-0 flex h-full w-[min(100%,292px)] flex-col border-r border-line bg-surface"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 380, damping: 36 }}
             >
-              <div className="flex h-14 items-center justify-between border-b border-line px-4">
+              <div className="flex h-12 items-center justify-between border-b border-line px-4">
                 <div className="flex items-center gap-2">
-                  <LogoMark size={24} />
-                  <span className="text-[11px] font-semibold tracking-[0.14em]">NIGHTDESK</span>
+                  <LogoMark size={22} />
+                  <span className="text-[11px] font-semibold tracking-[0.14em]">
+                    NIGHTDESK
+                  </span>
                 </div>
                 <button
                   ref={closeRef}
                   type="button"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-mute"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-line text-mute"
                   aria-label="Close navigation"
                   onClick={() => setOpen(false)}
                 >
                   <CloseIcon />
                 </button>
               </div>
-              <nav className="flex flex-1 flex-col gap-1 p-3">
+              <nav className="flex flex-1 flex-col gap-0.5 p-2">
                 {LINKS.map((l) => {
                   const on = path === l.href || path.startsWith(l.href + "/");
                   const Icon = l.icon;
@@ -167,7 +174,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       key={l.href}
                       href={l.href}
                       className={cls(
-                        "flex items-center gap-3 rounded-xl px-3 py-3 text-[14px]",
+                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px]",
                         on
                           ? "bg-accent/10 text-accent"
                           : "text-mute hover:bg-surface2 hover:text-ink",
@@ -180,7 +187,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   );
                 })}
               </nav>
-              <div className="border-t border-line p-4">
+              <div className="border-t border-line p-3">
                 <VenueStatus />
               </div>
             </motion.aside>
@@ -222,49 +229,60 @@ function CloseIcon() {
 }
 
 function DeskIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <rect x="2" y="3" width="12" height="10" rx="1.5" stroke={active ? "#4DE8FF" : "currentColor"} />
-      <path d="M2 7h12" stroke={active ? "#4DE8FF" : "currentColor"} />
+      <rect x="2" y="3" width="12" height="10" rx="1.5" stroke={c} />
+      <path d="M2 7h12" stroke={c} />
     </svg>
   );
 }
 function RiskIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M8 2l6 11H2L8 2z" stroke={active ? "#4DE8FF" : "currentColor"} />
-      <path d="M8 7v3" stroke={active ? "#4DE8FF" : "currentColor"} />
-      <circle cx="8" cy="11.5" r="0.7" fill={active ? "#4DE8FF" : "currentColor"} />
+      <path d="M8 2l6 11H2L8 2z" stroke={c} />
+      <path d="M8 7v3" stroke={c} />
+      <circle cx="8" cy="11.5" r="0.7" fill={c} />
     </svg>
   );
 }
 function OrdersIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M3 4h10M3 8h10M3 12h7" stroke={active ? "#4DE8FF" : "currentColor"} strokeLinecap="round" />
+      <path d="M3 4h10M3 8h10M3 12h7" stroke={c} strokeLinecap="round" />
     </svg>
   );
 }
 function PaperIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <rect x="3" y="2" width="10" height="12" rx="1.5" stroke={active ? "#4DE8FF" : "currentColor"} />
-      <path d="M6 6h4M6 9h4" stroke={active ? "#4DE8FF" : "currentColor"} />
+      <rect x="3" y="2" width="10" height="12" rx="1.5" stroke={c} />
+      <path d="M6 6h4M6 9h4" stroke={c} />
     </svg>
   );
 }
 function AuditIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="5.5" stroke={active ? "#4DE8FF" : "currentColor"} />
-      <path d="M8 5v3.5l2 1.5" stroke={active ? "#4DE8FF" : "currentColor"} strokeLinecap="round" />
+      <circle cx="8" cy="8" r="5.5" stroke={c} />
+      <path d="M8 5v3.5l2 1.5" stroke={c} strokeLinecap="round" />
     </svg>
   );
 }
 function BacktestIcon({ active }: { active?: boolean }) {
+  const c = active ? "#4DE8FF" : "currentColor";
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M2 12l3.5-4 3 2.5L14 4" stroke={active ? "#4DE8FF" : "currentColor"} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M2 12l3.5-4 3 2.5L14 4"
+        stroke={c}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

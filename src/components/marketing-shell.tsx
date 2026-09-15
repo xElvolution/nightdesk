@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { LogoMark } from "./logo";
 
 const LINKS = [
-  { href: "/#product", label: "Product" },
-  { href: "/#agents", label: "Agents" },
-  { href: "/#risk", label: "Risk" },
+  { href: "/#features", label: "Product" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#metrics", label: "Metrics" },
   { href: "/desk", label: "Open desk" },
 ];
 
@@ -17,9 +17,10 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const panelId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -37,11 +38,12 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
+      menuBtnRef.current?.focus();
     };
   }, [open]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-bg">
+    <div className="flex min-h-screen flex-col bg-bg">
       <header
         className={`sticky top-0 z-50 transition-[background,border-color,backdrop-filter] duration-300 ${
           scrolled
@@ -49,10 +51,10 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-8 px-5">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+        <div className="mx-auto flex h-[72px] max-w-6xl items-center gap-8 px-5 md:px-6">
+          <Link href="/" className="flex shrink-0 items-center gap-2.5">
             <LogoMark />
-            <span className="text-[13px] font-semibold tracking-[0.16em] text-ink">
+            <span className="text-[13px] font-semibold tracking-[0.18em] text-ink">
               NIGHTDESK
             </span>
           </Link>
@@ -62,20 +64,18 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               <a
                 key={l.href}
                 href={l.href}
-                className="rounded-lg px-3 py-2 text-[13px] text-mute transition-colors hover:text-ink"
+                className="rounded-lg px-3.5 py-2 text-[13px] text-mute transition-colors hover:text-ink"
               >
                 {l.label}
               </a>
             ))}
-            <Link
-              href="/desk"
-              className="btn-primary ml-2 px-4 py-2 text-[13px]"
-            >
+            <Link href="/desk" className="btn-primary ml-3 px-4 py-2.5 text-[13px]">
               Open desk
             </Link>
           </nav>
 
           <button
+            ref={menuBtnRef}
             type="button"
             className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line text-ink md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -83,7 +83,6 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             aria-controls={panelId}
             onClick={() => setOpen((v) => !v)}
           >
-            <span className="sr-only">Menu</span>
             <Hamburger open={open} />
           </button>
         </div>
@@ -96,10 +95,11 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
             <button
               type="button"
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/65 backdrop-blur-sm"
               aria-label="Close menu backdrop"
               onClick={() => setOpen(false)}
             />
@@ -114,7 +114,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 380, damping: 36 }}
             >
-              <div className="flex h-16 items-center justify-between border-b border-line px-4">
+              <div className="flex h-[72px] items-center justify-between border-b border-line px-5">
                 <span className="text-[12px] font-semibold tracking-[0.16em] text-ink">
                   MENU
                 </span>
@@ -134,7 +134,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
                     <a
                       key={l.href}
                       href={l.href}
-                      className="rounded-xl px-3 py-3 text-[15px] text-ink hover:bg-surface2"
+                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-surface2"
                       onClick={() => setOpen(false)}
                     >
                       {l.label}
@@ -143,7 +143,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
                     <Link
                       key={l.href}
                       href={l.href}
-                      className="rounded-xl px-3 py-3 text-[15px] text-ink hover:bg-surface2"
+                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-surface2"
                       onClick={() => setOpen(false)}
                     >
                       {l.label}
@@ -168,9 +168,24 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1">{children}</main>
 
       <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-8 text-[12px] text-faint">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-[12px] text-faint md:px-6">
           <span>NightDesk · XElvolution · MIT</span>
-          <span>Bitget rToken overnight desk</span>
+          <div className="flex gap-5">
+            <a href="/#features" className="hover:text-mute">
+              Product
+            </a>
+            <Link href="/desk" className="hover:text-mute">
+              Desk
+            </Link>
+            <a
+              href="https://github.com/xElvolution/nightdesk"
+              className="hover:text-mute"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
       </footer>
     </div>

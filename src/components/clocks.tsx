@@ -12,16 +12,16 @@ export function ClockPair() {
   return (
     <div className="flex flex-wrap gap-4 text-[12px] tabular">
       <div>
-        <div className="text-[10px] uppercase tracking-[0.16em] text-amber">Lagos</div>
-        <div className="text-ink">{c.lagos}</div>
+        <div className="label text-accent">Lagos</div>
+        <div className="mt-0.5 text-ink">{c.lagos}</div>
       </div>
       <div>
-        <div className="text-[10px] uppercase tracking-[0.16em] text-faint">New York</div>
-        <div className="text-mute">{c.ny}</div>
+        <div className="label">New York</div>
+        <div className="mt-0.5 text-mute">{c.ny}</div>
       </div>
       <div>
-        <div className="text-[10px] uppercase tracking-[0.16em] text-faint">Session</div>
-        <div className="text-mute">{c.session}</div>
+        <div className="label">Session</div>
+        <div className="mt-0.5 text-mute">{c.session}</div>
       </div>
     </div>
   );

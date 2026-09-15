@@ -19,7 +19,7 @@ export default function OrdersPage() {
           type="button"
           onClick={d.submitPlan}
           disabled={!legs.length || d.phase === "arming" || d.phase === "filled"}
-          className="rounded-lg bg-amber px-4 py-2 text-[13px] font-medium text-bg disabled:opacity-40"
+          className="btn-primary px-4 py-2 text-[13px] disabled:opacity-40"
         >
           Submit order
         </button>
@@ -36,11 +36,11 @@ export default function OrdersPage() {
         <div className="grid gap-3">
           {d.phase === "arming" && (
             <Panel>
-              <div className="text-[12px] text-amber">
+              <div className="text-[12px] text-accent">
                 Preview live · {(d.remainingMs / 1000).toFixed(1)}s · cancel-on-anomaly on
               </div>
               <div className="mt-2 h-1 overflow-hidden rounded bg-line">
-                <div className="h-full bg-amber" style={{ width: `${(d.remainingMs / 8000) * 100}%` }} />
+                <div className="h-full bg-accent" style={{ width: `${(d.remainingMs / 8000) * 100}%` }} />
               </div>
             </Panel>
           )}
@@ -71,7 +71,7 @@ export default function OrdersPage() {
                 </div>
                 <div>
                   <div className="text-faint">Receipt</div>
-                  <div className="tabular text-amber">{leg.receipt.hash}</div>
+                  <div className="tabular text-accent">{leg.receipt.hash}</div>
                 </div>
               </div>
               <p className="mt-3 text-[12px] text-mute">{leg.reason}</p>

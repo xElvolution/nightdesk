@@ -24,7 +24,7 @@ export default function RiskPage() {
       lede="The desk does not debate risk. A rule either passes, warns and cuts size, or blocks the ticket. Reducing into an earnings window is allowed. Adding is not."
     >
       <div className="mb-6 flex flex-wrap gap-2 text-[12px]">
-        <Pill tone="amber">{RISK_RULES.length} rules</Pill>
+        <Pill tone="accent">{RISK_RULES.length} rules</Pill>
         <Pill tone="loss">rTSLA earnings {EARNINGS_HOURS.rTSLA}h</Pill>
         <Pill>{tripped.size} tripped on loaded book</Pill>
       </div>

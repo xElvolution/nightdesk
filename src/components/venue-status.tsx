@@ -46,10 +46,7 @@ export function VenueStatus() {
       : h.status === "rate_limited"
         ? "bg-warn"
         : "bg-loss";
-  const label =
-    h.mode === "live"
-      ? "Bitget live"
-      : "Bitget recorded tape";
+  const label = h.mode === "live" ? "Bitget live" : "Bitget recorded tape";
 
   return (
     <span className="flex items-center gap-1.5 text-[11px] text-mute" title={h.lastError ?? label}>

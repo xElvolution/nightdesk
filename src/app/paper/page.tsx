@@ -104,7 +104,7 @@ export default function PaperPage() {
                   <td className="py-2 tabular">{f.price.toFixed(2)}</td>
                   <td className="py-2 tabular">{usdt(f.notional)}</td>
                   <td className="py-2 tabular">{f.feeUsdt.toFixed(2)}</td>
-                  <td className="py-2 tabular text-amber">{f.id}</td>
+                  <td className="py-2 tabular text-accent">{f.id}</td>
                 </tr>
               ))}
             </tbody>

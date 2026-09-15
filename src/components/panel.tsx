@@ -6,22 +6,28 @@ export function Panel({
   action,
   children,
   className,
+  glow = false,
 }: {
   title?: string;
   kicker?: string;
   action?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  glow?: boolean;
 }) {
   return (
-    <section className={cls("rounded-xl border border-line bg-panel lamp", className)}>
+    <section
+      className={cls(
+        "rounded-[14px] border border-line bg-surface",
+        glow && "card-glow",
+        className,
+      )}
+    >
       {(title || action) && (
         <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
           <div>
-            {kicker && (
-              <div className="text-[10px] uppercase tracking-[0.18em] text-amber">{kicker}</div>
-            )}
-            {title && <h2 className="text-[13px] font-medium text-ink">{title}</h2>}
+            {kicker && <div className="label text-accent">{kicker}</div>}
+            {title && <h2 className="text-[13px] font-medium tracking-tight text-ink">{title}</h2>}
           </div>
           {action}
         </header>
@@ -40,21 +46,24 @@ export function Metric({
   label: string;
   value: string;
   hint?: string;
-  tone?: "gain" | "loss" | "amber" | "mute";
+  tone?: "gain" | "loss" | "accent" | "amber" | "mute";
 }) {
+  const t = tone === "amber" ? "accent" : tone;
   const color =
-    tone === "gain"
+    t === "gain"
       ? "text-gain"
-      : tone === "loss"
+      : t === "loss"
         ? "text-loss"
-        : tone === "amber"
-          ? "text-amber"
+        : t === "accent"
+          ? "text-accent"
           : "text-ink";
   return (
     <div className="min-w-0">
-      <div className="text-[10px] uppercase tracking-[0.16em] text-faint">{label}</div>
-      <div className={cls("mt-1 text-[18px] tabular", color)}>{value}</div>
-      {hint && <div className="mt-0.5 text-[11px] text-mute">{hint}</div>}
+      <div className="label">{label}</div>
+      <div className={cls("mt-1.5 text-[20px] font-medium tracking-tight tabular", color)}>
+        {value}
+      </div>
+      {hint && <div className="mt-1 text-[11px] leading-4 text-mute">{hint}</div>}
     </div>
   );
 }
@@ -64,18 +73,24 @@ export function Pill({
   tone = "mute",
 }: {
   children: React.ReactNode;
-  tone?: "gain" | "loss" | "amber" | "mute" | "warn" | "blue";
+  tone?: "gain" | "loss" | "accent" | "amber" | "mute" | "warn" | "blue";
 }) {
+  const t = tone === "amber" ? "accent" : tone;
   const map = {
     gain: "bg-gain/10 text-gain",
     loss: "bg-loss/10 text-loss",
-    amber: "bg-amber/10 text-amber",
+    accent: "bg-accent/10 text-accent",
     warn: "bg-warn/10 text-warn",
     blue: "bg-blue/10 text-blue",
-    mute: "bg-panel2 text-mute",
+    mute: "bg-surface2 text-mute",
   };
   return (
-    <span className={cls("inline-flex rounded-md px-1.5 py-0.5 text-[10px] uppercase tracking-wider", map[tone])}>
+    <span
+      className={cls(
+        "inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em]",
+        map[t],
+      )}
+    >
       {children}
     </span>
   );

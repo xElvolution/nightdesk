@@ -18,7 +18,7 @@ export default function AuditPage() {
       <Panel>
         <div className="mb-3 flex gap-2">
           <Pill>{d.audit.length} events</Pill>
-          <Pill tone="amber">{events[0]?.hash ?? "empty"}</Pill>
+          <Pill tone="accent">{events[0]?.hash ?? "empty"}</Pill>
         </div>
         {!events.length ? (
           <p className="text-[13px] text-mute">
@@ -41,12 +41,12 @@ export default function AuditPage() {
                   <tr key={e.id} className="border-t border-line align-top">
                     <td className="py-2 tabular text-mute whitespace-nowrap">{formatLagos(e.ts)}</td>
                     <td className="py-2">
-                      <Pill tone={e.actor === "execution" ? "amber" : "mute"}>{e.actor}</Pill>
+                      <Pill tone={e.actor === "execution" ? "accent" : "mute"}>{e.actor}</Pill>
                     </td>
                     <td className="py-2 text-ink">{e.action}</td>
                     <td className="py-2">{e.symbol ?? "desk"}</td>
                     <td className="py-2 max-w-xl text-mute">{e.detail}</td>
-                    <td className="py-2 tabular text-amber">{e.hash}</td>
+                    <td className="py-2 tabular text-accent">{e.hash}</td>
                   </tr>
                 ))}
               </tbody>

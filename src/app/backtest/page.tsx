@@ -30,7 +30,7 @@ export default function BacktestPage() {
         <button
           type="button"
           onClick={run}
-          className="rounded-lg bg-amber px-4 py-2 text-[13px] font-medium text-bg"
+          className="btn-primary px-4 py-2 text-[13px]"
         >
           Run path
         </button>

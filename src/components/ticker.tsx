@@ -33,19 +33,19 @@ export function Ticker() {
   if (!quotes.length) return null;
 
   return (
-    <div className="border-t border-line bg-bg2">
-      <div className="mx-auto flex max-w-7xl gap-6 overflow-x-auto px-5 py-1.5 text-[11px] tabular">
+    <div className="border-t border-line bg-surface/90">
+      <div className="ticker-mask flex gap-6 overflow-x-auto px-4 py-1.5 text-[11px] tabular">
         {quotes.map((q) => (
           <div key={q.symbol} className="flex items-center gap-2 whitespace-nowrap">
-            <span className="text-mute">{q.symbol}</span>
-            <span className="text-ink">{q.last.toFixed(2)}</span>
+            <span className="tracking-wide text-mute">{q.symbol}</span>
+            <span className="font-medium text-ink">{q.last.toFixed(2)}</span>
             <span className={q.changePct >= 0 ? "text-gain" : "text-loss"}>
               {pct(q.changePct)}
             </span>
             <span className="text-faint">{q.spreadBps.toFixed(1)} bps</span>
           </div>
         ))}
-        <div className="ml-auto text-faint uppercase tracking-wider">
+        <div className="ml-auto shrink-0 text-faint uppercase tracking-[0.12em]">
           {quotes[0]?.session === "us-cash-open" ? "US cash open" : "US cash closed · rToken overnight"}
           {health ? ` · ${health.mode}` : ""}
         </div>

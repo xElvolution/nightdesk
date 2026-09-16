@@ -8,7 +8,7 @@ import { LogoMark } from "./logo";
 const LINKS = [
   { href: "/#features", label: "Product" },
   { href: "/#how", label: "How it works" },
-  { href: "/desk", label: "Open desk" },
+  { href: "/enter", label: "Open desk" },
 ];
 
 export function MarketingShell({ children }: { children: React.ReactNode }) {
@@ -69,10 +69,10 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               </a>
             ))}
             <Link
-              href="/desk"
+              href="/enter"
               className="ml-2 inline-flex items-center rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#0a0612] transition hover:bg-violet-100"
             >
-              Get started
+              Open desk
             </Link>
           </nav>
 
@@ -155,11 +155,11 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               </nav>
               <div className="border-t border-white/10 p-4">
                 <Link
-                  href="/desk"
+                  href="/enter"
                   className="flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-[14px] font-semibold text-[#0a0612]"
                   onClick={() => setOpen(false)}
                 >
-                  Get started
+                  Open desk
                 </Link>
               </div>
             </motion.aside>
@@ -176,8 +176,8 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             <a href="/#features" className="hover:text-mute">
               Product
             </a>
-            <Link href="/desk" className="hover:text-mute">
-              Desk
+            <Link href="/enter" className="hover:text-mute">
+              Sign in
             </Link>
             <a
               href="https://github.com/xElvolution/nightdesk"

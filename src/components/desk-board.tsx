@@ -5,19 +5,33 @@ import { Metric, Panel, Pill } from "./panel";
 import { PageFrame } from "./frame";
 import { PriceChart } from "./price-chart";
 import { useDesk } from "./desk-context";
+import { useOperator } from "./operator-context";
+import { PresenceStrip } from "./presence-strip";
 import { cls, pct, usdt } from "@/lib/format";
 import { receiptLine } from "@/lib/agents/receipt";
 
 export function DeskBoard() {
   const d = useDesk();
+  const { operator } = useOperator();
 
   return (
     <PageFrame
       kicker="Desk"
-      title="Overnight book"
+      title={operator ? `Overnight book · @${operator.handle}` : "Overnight book"}
       lede="Import a Bitget rToken holdings CSV. Research, sentiment, risk, and execution each close with a sized action and a receipt. Submit once. Cancel-on-anomaly stays live until fill."
       extra={<ClockPair />}
     >
+      {operator && (
+        <div className="mb-3 flex flex-wrap items-center gap-2 text-[12px]">
+          <span className="rounded-full border border-accent/25 bg-accent/10 px-2.5 py-1 text-accent">
+            {operator.displayName} · @{operator.handle}
+          </span>
+          <span className="text-faint">Session live · book scoped to this operator</span>
+        </div>
+      )}
+      <div className="mb-4">
+        <PresenceStrip />
+      </div>
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <label className="btn-primary cursor-pointer px-3 py-2 text-[12px]">
           Import holdings CSV

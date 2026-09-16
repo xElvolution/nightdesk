@@ -22,6 +22,6 @@ export async function POST(req: Request) {
     cycle,
     anomalies,
     previewMs: 8000,
-    note: "Preview arms for 8 seconds. Any anomaly cancels before paper fill.",
+    note: "Preview arms for 8 seconds. Any anomaly cancels before ledger fill.",
   });
 }

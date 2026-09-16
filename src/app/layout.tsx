@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "rToken",
     "tokenized stocks",
     "agent trading",
-    "paper trading",
+    "operator desk",
     "risk",
     "NightDesk",
   ],

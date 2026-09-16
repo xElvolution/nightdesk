@@ -23,7 +23,7 @@ npm run dev
 npm run build
 ```
 
-Open [http://localhost:3000/desk](http://localhost:3000/desk). Template CSV: [public/books/holdings.template.csv](public/books/holdings.template.csv).
+Open [http://localhost:3000/enter](http://localhost:3000/enter) to sign in as an operator, then the desk. Template CSV: [public/books/holdings.template.csv](public/books/holdings.template.csv).
 
 ## Venue
 
@@ -53,9 +53,11 @@ Table: [docs/RISK-RULES.md](docs/RISK-RULES.md)
 
 ## Ledger
 
-- Browser local storage for the operator session
-- Server file ledger under `data/ledger/` via `GET/POST /api/ledger`
+- Operator cookie session (`/enter`) with profiles under `data/operators/`
+- Per-operator server ledger under `data/ledger/{operatorId}.json`
+- Browser local storage scoped to the signed-in operator
 - Blotter fields: Lagos timestamp, asset, side, price, qty, fee, cash change, receipt id
+- Seeded overnight book + desk presence for operators on first enter
 
 ## Backtest
 
@@ -73,11 +75,12 @@ Overnight path from prior cash close to next open. Fade gaps larger than 1.2%. F
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Product overview and live engine snapshot |
-| `/desk` | Import book, run cycle, submit order |
+| `/` | Marketing landing |
+| `/enter` | Operator entry (name + handle, session cookie) |
+| `/desk` | Overnight book, cycle, submit |
 | `/risk` | Twelve rules vs loaded book |
 | `/orders` | Armed preview and cancel-on-anomaly |
-| `/paper` | Blotter and positions |
+| `/blotter` | Positions and fills |
 | `/audit` | Hash chain |
 | `/backtest` | Overnight path replay |
 
@@ -94,7 +97,11 @@ Overnight path from prior cash close to next open. Fade gaps larger than 1.2%. F
 | `/api/orders/preview` | POST |
 | `/api/orders/submit` | POST |
 | `/api/paper` | GET |
-| `/api/ledger` | GET, POST |
+| `/api/ledger` | GET, POST (per operator) |
+| `/api/auth/enter` | POST |
+| `/api/auth/me` | GET |
+| `/api/auth/signout` | POST |
+| `/api/presence` | GET |
 | `/api/audit` | GET |
 | `/api/backtest` | GET, POST |
 
@@ -110,7 +117,8 @@ nightdesk/
 ├── src/lib/ledger/          # server persistence
 ├── public/books/            # holdings CSV template
 ├── docs/                    # architecture, risk, hackathon notes
-├── data/ledger/             # runtime state (gitignored JSON)
+├── data/ledger/             # per-operator ledger (gitignored JSON)
+├── data/operators/          # operator profiles (gitignored JSON)
 ├── LICENSE                  # MIT
 └── .env.example
 ```

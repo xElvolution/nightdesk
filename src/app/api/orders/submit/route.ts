@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       status: "cancelled",
       anomalies,
       cycle,
-      reason: "Cancel-on-anomaly fired before paper fill.",
+      reason: "Cancel-on-anomaly fired before ledger fill.",
     });
   }
 
@@ -51,6 +51,6 @@ export async function POST(req: Request) {
     fill,
     account,
     cycle,
-    note: "Paper fill only. No live Bitget order was sent.",
+    note: "Ledger fill. No live Bitget order sent.",
   });
 }

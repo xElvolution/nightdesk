@@ -24,7 +24,7 @@ export const RISK_RULES: RiskRuleDef[] = [
     severity: "block",
     summary: "Sum of absolute position notionals cannot exceed 80% of equity.",
     limit: "80% of equity",
-    why: "Paper capital has to survive a correlated tech selloff after the US cash close.",
+    why: "Book capital has to survive a correlated tech selloff after the US cash close.",
   },
   {
     id: "R03_CLUSTER",
@@ -88,7 +88,7 @@ export const RISK_RULES: RiskRuleDef[] = [
     severity: "block",
     summary: "Order notional cannot exceed 1.5% of average daily rToken notional.",
     limit: "1.5% of ADV",
-    why: "The paper book should be fillable on a real Bitget rToken tape.",
+    why: "The book should be fillable on a real Bitget rToken tape.",
   },
   {
     id: "R11_CONVICTION",

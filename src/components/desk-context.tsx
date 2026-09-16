@@ -26,6 +26,7 @@ import type {
   PaperAccount,
   RebalancePlan,
 } from "@/lib/types";
+import { useOperator } from "./operator-context";
 
 type Phase =
   | "empty"
@@ -58,9 +59,11 @@ interface DeskCtx {
 }
 
 const Ctx = createContext<DeskCtx | null>(null);
-const LOCAL = "nightdesk.ledger.v2";
+const LOCAL_BASE = "nightdesk.ledger.v3";
 
 export function DeskProvider({ children }: { children: React.ReactNode }) {
+  const { operator, loading: opLoading } = useOperator();
+  const localKey = operator ? `${LOCAL_BASE}.${operator.id}` : LOCAL_BASE;
   const [phase, setPhase] = useState<Phase>("empty");
   const [book, setBook] = useState<BookFile | null>(null);
   const [account, setAccount] = useState<PaperAccount | null>(null);
@@ -82,7 +85,7 @@ export function DeskProvider({ children }: { children: React.ReactNode }) {
     account: PaperAccount | null;
   }) => {
     try {
-      localStorage.setItem(LOCAL, JSON.stringify(next));
+      localStorage.setItem(localKey, JSON.stringify(next));
     } catch {
       /* ignore */
     }
@@ -91,20 +94,22 @@ export function DeskProvider({ children }: { children: React.ReactNode }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          csv: next.book?.raw,
-          name: next.book?.name,
+          book: next.book,
           fills: next.fills,
           audit: next.audit,
-          clear: !next.book && next.fills.length === 0,
+          account: next.account,
+          clear: !next.book && next.fills.length === 0 && next.audit.length === 0,
         }),
       });
     } catch {
       /* server ledger is best-effort */
     }
-  }, []);
+  }, [localKey]);
 
   useEffect(() => {
+    if (opLoading) return;
     let cancelled = false;
+    setHydrated(false);
     (async () => {
       try {
         const res = await fetch("/api/ledger", { cache: "no-store" });
@@ -124,12 +129,19 @@ export function DeskProvider({ children }: { children: React.ReactNode }) {
             setHydrated(true);
             return;
           }
+          if (!cancelled && !remote.book) {
+            setBook(null);
+            setAccount(null);
+            setFills([]);
+            setAudit([]);
+            setPhase("empty");
+          }
         }
       } catch {
         /* fall through */
       }
       try {
-        const raw = localStorage.getItem(LOCAL);
+        const raw = localStorage.getItem(localKey);
         if (raw && !cancelled) {
           const s = JSON.parse(raw) as {
             book?: BookFile;
@@ -153,7 +165,7 @@ export function DeskProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [localKey, opLoading, operator?.id]);
 
   useEffect(() => {
     return () => {
@@ -337,7 +349,7 @@ export function DeskProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     setFills([]);
     setAudit([]);
-    localStorage.removeItem(LOCAL);
+    localStorage.removeItem(localKey);
     await persist({ book: null, fills: [], audit: [], account: null });
   }, [persist]);
 

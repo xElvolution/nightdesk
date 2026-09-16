@@ -13,7 +13,7 @@ export default function AuditPage() {
     <PageFrame
       kicker="Audit"
       title="Hash-chained desk log"
-      lede="Every brief, sentiment print, risk gate, preview, cancel, and paper fill appends to a hash chain. Genesis is the first event. Replay the night from this page or GET /api/audit."
+      lede="Every brief, sentiment print, risk gate, preview, cancel, and ledger fill appends to a hash chain. Genesis is the first event. Replay the night from this page or GET /api/audit."
     >
       <Panel>
         <div className="mb-3 flex gap-2">

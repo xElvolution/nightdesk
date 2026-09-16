@@ -8,18 +8,20 @@ import { cls } from "@/lib/format";
 import { LogoMark } from "./logo";
 import { Ticker } from "./ticker";
 import { VenueStatus } from "./venue-status";
+import { useOperator } from "./operator-context";
 
 const LINKS = [
   { href: "/desk", label: "Desk", icon: DeskIcon },
   { href: "/risk", label: "Risk", icon: RiskIcon },
   { href: "/orders", label: "Orders", icon: OrdersIcon },
-  { href: "/paper", label: "Paper", icon: PaperIcon },
+  { href: "/blotter", label: "Blotter", icon: PaperIcon },
   { href: "/audit", label: "Audit", icon: AuditIcon },
   { href: "/backtest", label: "Backtest", icon: BacktestIcon },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
+  const { operator, signOut } = useOperator();
   const [open, setOpen] = useState(false);
   const panelId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -109,11 +111,29 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <div className="hidden sm:block">
                 <VenueStatus />
               </div>
+              {operator && (
+                <div className="flex items-center gap-2 rounded-lg border border-line bg-surface px-2 py-1">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[9px] font-semibold text-accent">
+                    {operator.initials}
+                  </span>
+                  <div className="hidden min-w-0 sm:block">
+                    <div className="truncate text-[11px] font-medium text-ink">{operator.displayName}</div>
+                    <div className="truncate text-[10px] text-faint">@{operator.handle} · on desk</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => void signOut()}
+                    className="rounded px-1.5 py-0.5 text-[10px] text-mute hover:text-ink"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
               <Link
                 href="/"
-                className="hidden rounded-lg px-2 py-1 text-[11px] text-mute hover:text-ink sm:inline"
+                className="hidden rounded-lg px-2 py-1 text-[11px] text-mute hover:text-ink xl:inline"
               >
-                Marketing
+                Site
               </Link>
             </div>
           </div>

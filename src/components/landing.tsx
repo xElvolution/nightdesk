@@ -69,10 +69,18 @@ export function Landing() {
               <div className="flex flex-wrap items-center gap-3">
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
-                    href="/desk"
+                    href="/enter"
                     className="inline-flex items-center rounded-full bg-white px-7 py-3 text-[14px] font-semibold text-[#0a0612] shadow-[0_0_32px_rgba(167,139,250,0.25)] transition hover:shadow-[0_0_40px_rgba(167,139,250,0.4)]"
                   >
-                    Get started
+                    Open desk
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/enter"
+                    className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-[14px] font-medium text-ink transition hover:border-violet-400/35 hover:bg-violet-500/10"
+                  >
+                    Sign in
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
@@ -84,6 +92,9 @@ export function Landing() {
                   </a>
                 </motion.div>
               </div>
+              <p className="mt-5 text-[12px] text-violet-200/70">
+                4 operators on desk tonight · books active across WAT
+              </p>
             </HeroItem>
 
             <HeroItem className="mt-14 md:mt-16" scale>
@@ -262,10 +273,10 @@ export function Landing() {
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
-                  href="/desk"
+                  href="/enter"
                   className="inline-flex items-center rounded-full bg-white px-8 py-3.5 text-[14px] font-semibold text-[#0a0612] shadow-[0_0_36px_rgba(167,139,250,0.28)]"
                 >
-                  Get started
+                  Open desk
                 </Link>
               </motion.div>
               <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>

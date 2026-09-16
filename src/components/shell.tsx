@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { MarketingShell } from "./marketing-shell";
 import { AppShell } from "./app-shell";
 
-const APP_PREFIXES = ["/desk", "/risk", "/orders", "/paper", "/audit", "/backtest"];
+const APP_PREFIXES = ["/desk", "/risk", "/orders", "/paper", "/blotter", "/audit", "/backtest"];
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();

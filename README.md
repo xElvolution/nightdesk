@@ -57,7 +57,7 @@ Table: [docs/RISK-RULES.md](docs/RISK-RULES.md)
 - Per-operator server ledger under `data/ledger/{operatorId}.json`
 - Browser local storage scoped to the signed-in operator
 - Blotter fields: Lagos timestamp, asset, side, price, qty, fee, cash change, receipt id
-- Seeded overnight book + desk presence for operators on first enter
+- Seeded overnight book for operators on first enter
 
 ## Backtest
 
@@ -80,9 +80,9 @@ Overnight path from prior cash close to next open. Fade gaps larger than 1.2%. F
 | `/desk` | Overnight book, cycle, submit |
 | `/risk` | Twelve rules vs loaded book |
 | `/orders` | Armed preview and cancel-on-anomaly |
-| `/blotter` | Positions and fills |
-| `/audit` | Hash chain |
-| `/backtest` | Overnight path replay |
+| `/blotter` | Positions and fills (also `/paper` redirect) |
+| `/audit` | Hash chain (secondary) |
+| `/backtest` | Overnight path replay (routable, not primary nav) |
 
 ## API
 

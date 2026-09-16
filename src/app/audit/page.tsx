@@ -1,6 +1,7 @@
 "use client";
 
 import { PageFrame } from "@/components/frame";
+import { PresenceStrip } from "@/components/presence-strip";
 import { Panel, Pill } from "@/components/panel";
 import { useDesk } from "@/components/desk-context";
 import { formatLagos } from "@/lib/clock";
@@ -15,6 +16,10 @@ export default function AuditPage() {
       title="Hash-chained desk log"
       lede="Every brief, sentiment print, risk gate, preview, cancel, and ledger fill appends to a hash chain. Genesis is the first event. Replay the night from this page or GET /api/audit."
     >
+      <div className="mb-4">
+        <PresenceStrip dense />
+      </div>
+
       <Panel>
         <div className="mb-3 flex gap-2">
           <Pill>{d.audit.length} events</Pill>

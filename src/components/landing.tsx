@@ -50,18 +50,17 @@ export function Landing() {
 
             <HeroItem className="mt-9 max-w-3xl md:mt-12">
               <h1 className="text-[40px] font-semibold leading-[1.04] tracking-[-0.04em] text-ink sm:text-5xl md:text-[64px] md:leading-[1.0]">
-                Night falls on Lagos at 21:00.
+                Overnight desk for Bitget rTokens
                 <span className="mt-2.5 block bg-gradient-to-r from-sky-100 via-indigo-100 to-sky-200 bg-clip-text text-transparent md:mt-3">
-                  The overnight desk stays open.
+                  while US cash is closed.
                 </span>
               </h1>
             </HeroItem>
 
             <HeroItem className="mt-6 max-w-xl md:mt-8">
               <p className="text-[15px] leading-7 text-mute md:text-[17px] md:leading-8">
-                When US cash closes, Bitget rTokens keep trading. Import the
-                book. Run research, sentiment, risk, and execution. Submit one
-                risk-gated rebalance before dawn.
+                Import the book. Run research, sentiment, risk, and execution.
+                Submit one risk-gated rebalance before the next cash open.
               </p>
             </HeroItem>
 
@@ -86,9 +85,6 @@ export function Landing() {
                   </span>
                 </a>
               </div>
-              <p className="mt-6 text-[12px] tracking-[-0.01em] text-sky-100/50">
-                4 operators on desk tonight · books active across WAT
-              </p>
             </HeroItem>
 
             <HeroItem className="mt-16 md:mt-20" scale>

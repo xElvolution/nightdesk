@@ -1,19 +1,17 @@
 import { NextResponse } from "next/server";
 import { readSession } from "@/lib/operators/session";
 import { getOperator, listOperators } from "@/lib/operators/store";
-import { seededPeers } from "@/lib/operators/peers";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const now = Date.now();
   const session = await readSession();
-  const peers = seededPeers(now);
   const operators = await listOperators();
 
   const recent = operators
     .filter((o) => !session || o.id !== session.operatorId)
-    .slice(0, 4)
+    .slice(0, 6)
     .map((o) => ({
       id: o.id,
       displayName: o.displayName,
@@ -44,14 +42,14 @@ export async function GET() {
         handle: op.handle,
         initials: op.initials,
         status: "online",
-        lastAction: "You · active on desk",
+        lastAction: "Active on desk",
         lastActionAt: op.lastSeenAt,
         seeded: false,
       };
     }
   }
 
-  const strip = [...(self ? [self] : []), ...recent, ...peers].slice(0, 8);
+  const strip = [...(self ? [self] : []), ...recent].slice(0, 8);
   const onlineCount = strip.filter((p) => p.status === "online").length;
 
   return NextResponse.json({

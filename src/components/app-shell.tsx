@@ -10,15 +10,14 @@ import { Ticker } from "./ticker";
 import { VenueStatus } from "./venue-status";
 import { useOperator } from "./operator-context";
 
-const PRIMARY = [{ href: "/desk", label: "Tonight", icon: DeskIcon }];
-
-const SECONDARY = [
+const PRIMARY = [
+  { href: "/desk", label: "Tonight", icon: DeskIcon },
   { href: "/orders", label: "Orders", icon: OrdersIcon },
   { href: "/blotter", label: "Blotter", icon: PaperIcon },
   { href: "/risk", label: "Risk", icon: RiskIcon },
-  { href: "/audit", label: "Audit", icon: AuditIcon },
-  { href: "/backtest", label: "Backtest", icon: BacktestIcon },
 ];
+
+const SECONDARY = [{ href: "/audit", label: "Audit", icon: AuditIcon }];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
@@ -339,19 +338,6 @@ function AuditIcon({ active }: { active?: boolean }) {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
       <circle cx="8" cy="8" r="5.5" stroke={c} />
       <path d="M8 5v3.5l2 1.5" stroke={c} strokeLinecap="round" />
-    </svg>
-  );
-}
-function BacktestIcon({ active }: { active?: boolean }) {
-  const c = active ? "#4DE8FF" : "currentColor";
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M2 12l3.5-4 3 2.5L14 4"
-        stroke={c}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
     </svg>
   );
 }

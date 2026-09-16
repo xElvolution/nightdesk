@@ -6,7 +6,6 @@ import { ClockPair } from "./clocks";
 import { Pill } from "./panel";
 import { useDesk } from "./desk-context";
 import { useOperator } from "./operator-context";
-import { PresenceStrip } from "./presence-strip";
 import { cls, usdt } from "@/lib/format";
 import type { RebalanceLeg } from "@/lib/types";
 
@@ -57,10 +56,6 @@ export function DeskBoard() {
       </header>
 
       <StepRail active={active} doneThrough={doneThrough} />
-
-      <div className="mt-4 mb-5">
-        <PresenceStrip dense />
-      </div>
 
       {d.error && (
         <p className="mb-4 rounded-xl border border-loss/30 bg-loss/10 px-3 py-2 text-[13px] text-loss">
@@ -127,10 +122,6 @@ export function DeskBoard() {
               <span className="text-faint">·</span>
               <Link href="/audit" className="text-mute hover:text-ink">
                 Audit
-              </Link>
-              <span className="text-faint">·</span>
-              <Link href="/backtest" className="text-mute hover:text-ink">
-                Backtest
               </Link>
             </div>
             <p className="mt-2 text-[11px] leading-4 text-faint">

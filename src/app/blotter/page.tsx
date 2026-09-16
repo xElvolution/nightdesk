@@ -2,7 +2,6 @@
 
 import { PageFrame } from "@/components/frame";
 import { Metric, Panel, Pill } from "@/components/panel";
-import { PresenceStrip } from "@/components/presence-strip";
 import { useDesk } from "@/components/desk-context";
 import { usdt, pnlClass } from "@/lib/format";
 import { formatLagos } from "@/lib/clock";
@@ -17,10 +16,6 @@ export default function BlotterPage() {
       title="Order blotter"
       lede="Fills on rAAPL, rNVDA, rTSLA, rMSFT, rAMZN at 4 bps. Venue adapter routes live Bitget when reachable, recorded tape otherwise. Timestamp, name, side, price, qty, fee, receipt id."
     >
-      <div className="mb-4">
-        <PresenceStrip dense />
-      </div>
-
       {acc ? (
         <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Panel>

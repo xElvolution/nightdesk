@@ -26,7 +26,7 @@ const STARS = [
 
 /**
  * Night-world 3D moon hero: soft rim glow, stars, orbiting rTokens.
- * Ambient scene only — never video-player chrome (play/pause, scrubber).
+ * Ambient scene only. Never video-player chrome (play/pause, scrubber).
  */
 export function HeroMoon() {
   const reduce = useReducedMotion();

@@ -1,6 +1,6 @@
 import type { PeerOperator } from "./types";
 
-/** Floor operators who share the overnight book. Real product presence, not labeled as demos. */
+/** Seeded peer roster for ledger fixtures. Not shown in primary desk chrome. */
 export function seededPeers(now = Date.now()): PeerOperator[] {
   const m = 60_000;
   const h = 60 * m;
@@ -58,8 +58,3 @@ export function seededPeers(now = Date.now()): PeerOperator[] {
   ];
 }
 
-export function peerSocialProofLine(now = Date.now()): string {
-  const peers = seededPeers(now);
-  const live = peers.filter((p) => p.status === "online").length;
-  return `${live} operators on desk tonight · ${peers.length + 1} books active across WAT`;
-}

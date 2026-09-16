@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
 import { LogoMark } from "@/components/logo";
+import { OperatorGate } from "@/components/operator-gate";
 import { useOperator } from "@/components/operator-context";
+import { isOnboardingComplete } from "@/lib/onboarding";
 
 function EnterForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/desk";
+  const nextParam = params.get("next") || "/desk";
   const { refresh } = useOperator();
   const [displayName, setDisplayName] = useState("");
   const [handle, setHandle] = useState("");
@@ -27,14 +29,25 @@ function EnterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ displayName, handle, email: email || undefined }),
       });
-      const data = (await res.json()) as { ok?: boolean; error?: string };
+      const data = (await res.json()) as {
+        ok?: boolean;
+        error?: string;
+        operator?: { id: string };
+      };
       if (!res.ok || !data.ok) {
         setError(data.error || "Could not open desk.");
         setBusy(false);
         return;
       }
       await refresh();
-      router.replace(next.startsWith("/") ? next : "/desk");
+      const id = data.operator?.id;
+      const onboarded = id ? isOnboardingComplete(id) : false;
+      if (onboarded) {
+        const dest = nextParam.startsWith("/") ? nextParam : "/desk";
+        router.replace(dest === "/onboarding" ? "/desk" : dest);
+      } else {
+        router.replace("/onboarding");
+      }
     } catch {
       setError("Network error. Try again.");
       setBusy(false);
@@ -50,11 +63,10 @@ function EnterForm() {
         </span>
       </div>
       <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-ink">
-        Enter as operator
+        Enter your name
       </h1>
       <p className="mt-3 text-[14px] leading-6 text-mute">
-        Your desk, blotter, and audit chain stay bound to this handle. Session
-        persists across refresh.
+        First time: a short tour teaches the overnight path. Returning operators go straight to the desk.
       </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-4">
@@ -108,14 +120,14 @@ function EnterForm() {
           disabled={busy}
           className="inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-5 text-[13px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90 active:translate-y-px disabled:opacity-50"
         >
-          {busy ? "Opening desk..." : "Open desk"}
+          {busy ? "Opening…" : "Continue"}
         </button>
       </form>
 
       <p className="mt-6 text-[12px] text-faint">
-        Returning operator? Use the same handle.{" "}
+        Returning? Use the same handle.{" "}
         <Link href="/" className="text-mute hover:text-ink">
-          Back to marketing
+          Back home
         </Link>
       </p>
     </div>
@@ -124,14 +136,16 @@ function EnterForm() {
 
 export default function EnterPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="mx-auto max-w-md px-5 py-24 text-[13px] text-mute">
-          Loading…
-        </div>
-      }
-    >
-      <EnterForm />
-    </Suspense>
+    <OperatorGate mode="enter">
+      <Suspense
+        fallback={
+          <div className="mx-auto max-w-md px-5 py-24 text-[13px] text-mute">
+            Loading…
+          </div>
+        }
+      >
+        <EnterForm />
+      </Suspense>
+    </OperatorGate>
   );
 }

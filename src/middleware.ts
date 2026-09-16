@@ -2,7 +2,16 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySession } from "@/lib/operators/session-token";
 
-const PROTECTED = ["/desk", "/risk", "/orders", "/paper", "/blotter", "/audit", "/backtest"];
+const PROTECTED = [
+  "/desk",
+  "/risk",
+  "/orders",
+  "/paper",
+  "/blotter",
+  "/audit",
+  "/backtest",
+  "/onboarding",
+];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -34,5 +43,7 @@ export const config = {
     "/audit/:path*",
     "/backtest",
     "/backtest/:path*",
+    "/onboarding",
+    "/onboarding/:path*",
   ],
 };

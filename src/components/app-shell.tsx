@@ -10,11 +10,12 @@ import { Ticker } from "./ticker";
 import { VenueStatus } from "./venue-status";
 import { useOperator } from "./operator-context";
 
-const LINKS = [
-  { href: "/desk", label: "Desk", icon: DeskIcon },
-  { href: "/risk", label: "Risk", icon: RiskIcon },
+const PRIMARY = [{ href: "/desk", label: "Tonight", icon: DeskIcon }];
+
+const SECONDARY = [
   { href: "/orders", label: "Orders", icon: OrdersIcon },
   { href: "/blotter", label: "Blotter", icon: PaperIcon },
+  { href: "/risk", label: "Risk", icon: RiskIcon },
   { href: "/audit", label: "Audit", icon: AuditIcon },
   { href: "/backtest", label: "Backtest", icon: BacktestIcon },
 ];
@@ -49,7 +50,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-bg">
-      {/* Desktop sidebar: app routes only */}
       <aside className="sticky top-0 hidden h-screen w-[64px] shrink-0 flex-col border-r border-line bg-surface lg:flex xl:w-[196px]">
         <Link
           href="/"
@@ -61,7 +61,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </span>
         </Link>
         <nav className="flex flex-1 flex-col gap-0.5 p-1.5">
-          {LINKS.map((l) => {
+          {PRIMARY.map((l) => {
+            const on = path === l.href || path.startsWith(l.href + "/");
+            const Icon = l.icon;
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                title={l.label}
+                className={cls(
+                  "group flex items-center gap-3 rounded-lg px-2.5 py-2.5 text-[13px] font-medium transition-colors",
+                  on
+                    ? "bg-accent/10 text-accent shadow-[inset_0_0_0_1px_rgba(77,232,255,0.18)]"
+                    : "text-ink hover:bg-surface2",
+                )}
+              >
+                <Icon active={on} />
+                <span className="hidden tracking-wide xl:inline">{l.label}</span>
+              </Link>
+            );
+          })}
+          <div className="my-2 hidden px-2.5 xl:block">
+            <div className="label">More</div>
+          </div>
+          <div className="my-1 h-px bg-line xl:hidden" />
+          {SECONDARY.map((l) => {
             const on = path === l.href || path.startsWith(l.href + "/");
             const Icon = l.icon;
             return (
@@ -73,7 +97,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   "group flex items-center gap-3 rounded-lg px-2.5 py-2 text-[12px] transition-colors",
                   on
                     ? "bg-accent/10 text-accent shadow-[inset_0_0_0_1px_rgba(77,232,255,0.18)]"
-                    : "text-mute hover:bg-surface2 hover:text-ink",
+                    : "text-faint hover:bg-surface2 hover:text-mute",
                 )}
               >
                 <Icon active={on} />
@@ -117,8 +141,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     {operator.initials}
                   </span>
                   <div className="hidden min-w-0 sm:block">
-                    <div className="truncate text-[11px] font-medium text-ink">{operator.displayName}</div>
-                    <div className="truncate text-[10px] text-faint">@{operator.handle} · on desk</div>
+                    <div className="truncate text-[11px] font-medium text-ink">
+                      {operator.displayName}
+                    </div>
+                    <div className="truncate text-[10px] text-faint">
+                      @{operator.handle}
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -186,7 +214,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
               <nav className="flex flex-1 flex-col gap-0.5 p-2">
-                {LINKS.map((l) => {
+                {PRIMARY.map((l) => {
+                  const on = path === l.href || path.startsWith(l.href + "/");
+                  const Icon = l.icon;
+                  return (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className={cls(
+                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-medium",
+                        on
+                          ? "bg-accent/10 text-accent"
+                          : "text-ink hover:bg-surface2",
+                      )}
+                      onClick={() => setOpen(false)}
+                    >
+                      <Icon active={on} />
+                      {l.label}
+                    </Link>
+                  );
+                })}
+                <div className="label mx-3 mt-4 mb-1">More</div>
+                {SECONDARY.map((l) => {
                   const on = path === l.href || path.startsWith(l.href + "/");
                   const Icon = l.icon;
                   return (

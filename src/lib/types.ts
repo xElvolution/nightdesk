@@ -109,6 +109,9 @@ export interface Fill {
   notional: number;
   feeUsdt: number;
   ts: number;
+  /** Proof link back to the sized action receipt. */
+  receiptHash?: string;
+  receiptId?: string;
 }
 
 export interface Position {
@@ -257,5 +260,10 @@ export interface RebalancePlan {
   impact: ImpactNumbers;
   ts: number;
   summary: string;
+  /** Every lot closes with a sized buy / sell / hold receipt. */
   receipts: ActionReceipt[];
+  /** Agent cycles that produced those receipts (one per lot). */
+  cycles: DeskCycle[];
+  /** Night-proof hash over the full receipt set. */
+  bundleHash: string;
 }

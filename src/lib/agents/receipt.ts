@@ -45,6 +45,50 @@ export function stampReceipt(input: {
   };
 }
 
+/** Seal a preview/hold receipt after the night closes (fill, hold confirm, or cancel). */
+export function sealReceipt(
+  receipt: ActionReceipt,
+  status: ActionReceipt["status"],
+  extras?: { limitPrice?: number; qty?: number; reason?: string; ts?: number },
+): ActionReceipt {
+  const qty = extras?.qty ?? receipt.qty;
+  const limitPrice = extras?.limitPrice ?? receipt.limitPrice;
+  const ts = extras?.ts ?? Date.now();
+  const reason = extras?.reason ?? receipt.reason;
+  const body = JSON.stringify({
+    symbol: receipt.symbol,
+    ts,
+    kind: receipt.kind,
+    qty,
+    limitPrice,
+    status,
+    verdict: receipt.riskVerdict,
+    prior: receipt.hash,
+  });
+  const hash = fnv1a(body);
+  return {
+    ...receipt,
+    id: `rcpt_${hash}`,
+    hash,
+    ts,
+    qty,
+    limitPrice,
+    notional: qty * limitPrice,
+    status,
+    reason,
+  };
+}
+
+/** One night-proof hash over every sized action receipt. */
+export function bundleReceipts(receipts: ActionReceipt[], ts = Date.now()): string {
+  const payload = receipts
+    .slice()
+    .sort((a, b) => a.symbol.localeCompare(b.symbol))
+    .map((r) => `${r.symbol}:${r.kind}:${r.qty}:${r.limitPrice}:${r.status}:${r.hash}`)
+    .join("|");
+  return fnv1a(`night:${ts}:${payload}`);
+}
+
 export function receiptLine(r: ActionReceipt): string {
   if (r.kind === "hold" || r.qty === 0) {
     return `HOLD 0 ${r.symbol} · receipt ${r.hash}`;

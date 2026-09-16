@@ -97,6 +97,8 @@ export function makeFill(args: {
   qty: number;
   price: number;
   ts: number;
+  receiptHash?: string;
+  receiptId?: string;
 }): Fill {
   const notional = args.qty * args.price;
   return {
@@ -109,5 +111,7 @@ export function makeFill(args: {
     notional,
     feeUsdt: feeOn(notional),
     ts: args.ts,
+    receiptHash: args.receiptHash,
+    receiptId: args.receiptId,
   };
 }

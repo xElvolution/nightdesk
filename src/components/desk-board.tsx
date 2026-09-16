@@ -6,8 +6,11 @@ import { ClockPair } from "./clocks";
 import { Pill } from "./panel";
 import { useDesk } from "./desk-context";
 import { useOperator } from "./operator-context";
+import { PresenceStrip } from "./presence-strip";
 import { cls, usdt } from "@/lib/format";
-import type { RebalanceLeg } from "@/lib/types";
+import { actionLabel } from "@/lib/rebalance";
+import { receiptLine } from "@/lib/agents/receipt";
+import type { ActionReceipt, RebalanceLeg } from "@/lib/types";
 
 type FlowStep = "book" | "run" | "review" | "submit" | "receipts";
 
@@ -25,12 +28,18 @@ export function DeskBoard() {
   const active = activeStep(d.phase, !!d.book);
   const doneThrough = doneThroughStep(d.phase, !!d.book);
 
-  const actionLines = useMemo(() => {
+  const reviewActions = useMemo(() => {
+    if (!d.plan) return [];
+    return d.plan.receipts.slice().sort((a, b) => a.symbol.localeCompare(b.symbol));
+  }, [d.plan]);
+
+  const tradeLines = useMemo(() => {
     if (!d.plan) return [];
     return d.plan.legs.map(plainLeg);
   }, [d.plan]);
 
   const nextCta = primaryCta(d);
+  const proofReceipts = d.nightReceipts.length ? d.nightReceipts : d.phase === "filled" ? reviewActions : [];
 
   return (
     <div className="px-4 py-5 sm:px-5 lg:px-6">
@@ -57,6 +66,10 @@ export function DeskBoard() {
 
       <StepRail active={active} doneThrough={doneThrough} />
 
+      <div className="mt-4 mb-5">
+        <PresenceStrip dense />
+      </div>
+
       {d.error && (
         <p className="mb-4 rounded-xl border border-loss/30 bg-loss/10 px-3 py-2 text-[13px] text-loss">
           {d.error}
@@ -77,15 +90,22 @@ export function DeskBoard() {
             d.phase === "cancelled") &&
             d.plan && (
               <ReviewCard
-                lines={actionLines}
+                actions={reviewActions}
+                tradeLines={tradeLines}
                 blocked={d.plan.blocked}
                 summary={d.plan.summary}
+                bundleHash={d.plan.bundleHash}
                 phase={d.phase}
               />
             )}
 
-          {(d.phase === "filled" || (d.fills.length > 0 && d.phase !== "empty")) && (
-            <ReceiptsCard fills={d.fills} cycles={d.cycles} phase={d.phase} />
+          {(d.phase === "filled" || d.phase === "cancelled" || proofReceipts.length > 0) && (
+            <ReceiptsCard
+              fills={d.fills}
+              receipts={proofReceipts}
+              bundleHash={d.nightBundleHash ?? d.plan?.bundleHash ?? null}
+              phase={d.phase}
+            />
           )}
         </div>
 
@@ -97,7 +117,8 @@ export function DeskBoard() {
             anomalies={d.anomalies}
             killSwitch={d.killSwitch}
             hasBook={!!d.book}
-            hasLegs={!!d.plan && d.plan.legs.length > 0}
+            hasPlan={!!d.plan}
+            tradeCount={d.plan?.legs.length ?? 0}
             onRun={d.runCycleNow}
             onSubmit={d.submitPlan}
             onCancel={d.cancel}
@@ -122,6 +143,10 @@ export function DeskBoard() {
               <span className="text-faint">·</span>
               <Link href="/audit" className="text-mute hover:text-ink">
                 Audit
+              </Link>
+              <span className="text-faint">·</span>
+              <Link href="/backtest" className="text-mute hover:text-ink">
+                Backtest
               </Link>
             </div>
             <p className="mt-2 text-[11px] leading-4 text-faint">
@@ -269,14 +294,18 @@ function BookCard({
 }
 
 function ReviewCard({
-  lines,
+  actions,
+  tradeLines,
   blocked,
   summary,
+  bundleHash,
   phase,
 }: {
-  lines: string[];
+  actions: ActionReceipt[];
+  tradeLines: string[];
   blocked: RebalanceLeg[];
   summary: string;
+  bundleHash: string;
   phase: string;
 }) {
   return (
@@ -288,28 +317,43 @@ function ReviewCard({
             ? "Moves that went through"
             : phase === "cancelled"
               ? "Moves that did not go through"
-              : "Suggested overnight moves"}
+              : "Sized overnight actions"}
         </h2>
         <p className="mt-1 text-[12px] leading-5 text-mute">{plainSummary(summary)}</p>
+        <p className="mt-1 font-mono text-[11px] text-faint">Night proof {bundleHash}</p>
       </header>
       <div className="space-y-2 p-4">
-        {lines.length === 0 ? (
-          <p className="text-[13px] text-mute">
-            No size changes tonight. Your book can stay as it is.
-          </p>
-        ) : (
-          lines.map((line) => (
-            <div
-              key={line}
-              className="rounded-xl border border-line bg-bg/40 px-3 py-3 text-[13px] leading-5 text-ink"
-            >
-              {line}
-            </div>
-          ))
+        {tradeLines.length > 0 && (
+          <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-faint">
+            Trades to submit
+          </div>
         )}
+        {tradeLines.map((line) => (
+          <div
+            key={line}
+            className="rounded-xl border border-accent/25 bg-accent/5 px-3 py-3 text-[13px] leading-5 text-ink"
+          >
+            {line}
+          </div>
+        ))}
+        <div className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wide text-faint">
+          Every rToken action
+        </div>
+        {actions.map((r) => (
+          <div
+            key={r.id}
+            className="rounded-xl border border-line bg-bg/40 px-3 py-3 text-[13px] leading-5 text-ink"
+          >
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <span className="font-medium">{actionLabel(r)}</span>
+              <span className="font-mono text-[11px] text-accent">{r.hash}</span>
+            </div>
+            <p className="mt-1 text-[12px] text-mute">{r.reason}</p>
+          </div>
+        ))}
         {blocked.map((leg) => (
           <div
-            key={`b-${leg.symbol}`}
+            key={`b-${leg.symbol}-${leg.receipt.id}`}
             className="rounded-xl border border-loss/25 bg-loss/5 px-3 py-3 text-[13px] text-loss"
           >
             Skipped {leg.symbol}: {leg.reason}
@@ -322,23 +366,43 @@ function ReviewCard({
 
 function ReceiptsCard({
   fills,
-  cycles,
+  receipts,
+  bundleHash,
   phase,
 }: {
   fills: ReturnType<typeof useDesk>["fills"];
-  cycles: ReturnType<typeof useDesk>["cycles"];
+  receipts: ActionReceipt[];
+  bundleHash: string | null;
   phase: string;
 }) {
-  if (fills.length === 0 && cycles.length === 0) return null;
+  if (receipts.length === 0 && fills.length === 0) return null;
   return (
     <section className="rounded-[14px] border border-line bg-surface">
       <header className="border-b border-line px-4 py-3">
         <div className="label text-accent">Receipts</div>
         <h2 className="text-[15px] font-medium tracking-tight text-ink">
-          {phase === "filled" ? "Night closed" : "Prior fills on this book"}
+          {phase === "filled" ? "Night closed" : phase === "cancelled" ? "Night cancelled" : "Proof of actions"}
         </h2>
+        {bundleHash && (
+          <p className="mt-1 font-mono text-[11px] text-faint">Bundle {bundleHash}</p>
+        )}
       </header>
       <div className="divide-y divide-line">
+        {receipts.map((r) => (
+          <div key={r.id} className="px-4 py-3 text-[13px]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span
+                className={cls(
+                  "font-medium",
+                  r.kind === "buy" ? "text-gain" : r.kind === "sell" ? "text-loss" : "text-ink",
+                )}
+              >
+                {receiptLine(r)}
+              </span>
+              <span className="tabular text-[11px] text-faint">{r.status}</span>
+            </div>
+          </div>
+        ))}
         {fills.slice(0, 12).map((f) => (
           <div
             key={f.id}
@@ -354,18 +418,10 @@ function ReceiptsCard({
             </span>
             <span className="tabular text-mute">
               @ {f.price.toFixed(2)} · fee {f.feeUsdt.toFixed(2)}
+              {f.receiptHash ? ` · ${f.receiptHash}` : ""}
             </span>
           </div>
         ))}
-        {fills.length === 0 &&
-          cycles.map((c) => (
-            <div key={c.symbol} className="px-4 py-3 text-[13px] text-mute">
-              {c.receipt.kind === "hold" || c.receipt.qty === 0
-                ? `Hold ${c.symbol}`
-                : `${c.receipt.kind === "buy" ? "Buy" : "Sell"} ${c.receipt.qty} ${c.symbol}`}
-              <span className="ml-2 tabular text-faint">{c.receipt.hash.slice(0, 10)}</span>
-            </div>
-          ))}
       </div>
     </section>
   );
@@ -378,7 +434,8 @@ function ActionCard({
   anomalies,
   killSwitch,
   hasBook,
-  hasLegs,
+  hasPlan,
+  tradeCount,
   onRun,
   onSubmit,
   onCancel,
@@ -391,7 +448,8 @@ function ActionCard({
   anomalies: string[];
   killSwitch: boolean;
   hasBook: boolean;
-  hasLegs: boolean;
+  hasPlan: boolean;
+  tradeCount: number;
   onRun: () => void;
   onSubmit: () => void;
   onCancel: () => void;
@@ -407,7 +465,7 @@ function ActionCard({
           {ctaHeadline(phase, hasBook)}
         </h2>
         <p className="mt-1 text-[12px] leading-5 text-mute">
-          {ctaBody(phase, hasBook, hasLegs)}
+          {ctaBody(phase, hasBook, tradeCount)}
         </p>
       </div>
       <div className="space-y-3 p-4">
@@ -426,10 +484,10 @@ function ActionCard({
             <button
               type="button"
               onClick={onSubmit}
-              disabled={!hasLegs || running}
+              disabled={!hasPlan || running}
               className="btn-primary w-full px-4 py-3 text-[14px] disabled:opacity-40"
             >
-              Submit rebalance
+              {tradeCount > 0 ? "Submit rebalance" : "Confirm overnight holds"}
             </button>
             <button
               type="button"
@@ -585,17 +643,17 @@ function ctaHeadline(phase: string, hasBook: boolean): string {
   return "Tonight";
 }
 
-function ctaBody(phase: string, hasBook: boolean, hasLegs: boolean): string {
+function ctaBody(phase: string, hasBook: boolean, tradeCount: number): string {
   if (!hasBook) return "Enter with a handle so your book loads, or import a CSV.";
   if (phase === "loaded") return "Press once. We size the overnight moves for you.";
   if (phase === "watching") return "Checking each name and sizing the actions.";
   if (phase === "proposed") {
-    return hasLegs
-      ? "Read the moves on the left, then submit one rebalance."
-      : "Nothing to trade. You can leave the book as is, or run again later.";
+    return tradeCount > 0
+      ? "Read the sized rToken moves on the left, then submit one rebalance."
+      : "No trade size tonight. Confirm the hold receipts so the night still closes with proof.";
   }
   if (phase === "arming") return "A short preview window is open. Wrong market prints cancel the order.";
-  if (phase === "filled") return "Fills are logged. You can run another cycle if you want.";
+  if (phase === "filled") return "Receipts are logged. You can run another cycle if you want.";
   if (phase === "cancelled") return "No fill. Run again when you are ready.";
   return "Follow the steps above.";
 }

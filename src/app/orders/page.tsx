@@ -18,14 +18,14 @@ export default function OrdersPage() {
         <button
           type="button"
           onClick={d.submitPlan}
-          disabled={!legs.length || d.phase === "arming" || d.phase === "filled"}
+          disabled={!d.plan || d.phase === "arming" || d.phase === "filled" || d.phase === "empty" || d.phase === "loaded" || d.phase === "watching"}
           className="btn-primary px-4 py-2 text-[13px] disabled:opacity-40"
         >
-          Submit order
+          {legs.length ? "Submit order" : "Confirm holds"}
         </button>
       }
     >
-      {!legs.length ? (
+      {!d.plan ? (
         <Panel>
           <p className="text-[13px] text-mute">
             No proposal yet. Import a book on the desk and run a desk cycle. Every name still
@@ -34,6 +34,24 @@ export default function OrdersPage() {
         </Panel>
       ) : (
         <div className="grid gap-3">
+          {!legs.length && (
+            <Panel title="Hold receipts">
+              <p className="mb-3 text-[12px] text-mute">
+                No trade size tonight. Confirm holds to seal the night proof.
+              </p>
+              <div className="space-y-2">
+                {d.plan.receipts.map((r) => (
+                  <div key={r.id} className="flex justify-between gap-2 text-[12px]">
+                    <span className="text-ink">
+                      {r.kind.toUpperCase()} {r.qty} {r.symbol}
+                    </span>
+                    <span className="tabular text-accent">{r.hash}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 font-mono text-[11px] text-faint">Night proof {d.plan.bundleHash}</p>
+            </Panel>
+          )}
           {d.phase === "arming" && (
             <Panel>
               <div className="text-[12px] text-accent">

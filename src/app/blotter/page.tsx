@@ -85,7 +85,7 @@ export default function BlotterPage() {
           <table className="w-full text-left text-[12px]">
             <thead className="text-faint">
               <tr>
-                {["Lagos", "Symbol", "Side", "Qty", "Price", "Notional", "Fee", "Id"].map((h) => (
+                {["Lagos", "Symbol", "Side", "Qty", "Price", "Notional", "Fee", "Receipt"].map((h) => (
                   <th key={h} className="pb-2 font-medium">
                     {h}
                   </th>
@@ -104,7 +104,7 @@ export default function BlotterPage() {
                   <td className="py-2 tabular">{f.price.toFixed(2)}</td>
                   <td className="py-2 tabular">{usdt(f.notional)}</td>
                   <td className="py-2 tabular text-mute">{usdt(f.feeUsdt)}</td>
-                  <td className="py-2 font-mono text-[10px] text-faint">{f.id}</td>
+                  <td className="py-2 font-mono text-[10px] text-faint">{f.receiptHash ?? f.id}</td>
                 </tr>
               ))}
             </tbody>

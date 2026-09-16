@@ -8,7 +8,6 @@ import { LogoMark } from "./logo";
 const LINKS = [
   { href: "/#features", label: "Product" },
   { href: "/#how", label: "How it works" },
-  { href: "/#metrics", label: "Metrics" },
   { href: "/desk", label: "Open desk" },
 ];
 
@@ -43,15 +42,15 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
   }, [open]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg">
-      <header
-        className={`sticky top-0 z-50 transition-[background,border-color,backdrop-filter] duration-300 ${
-          scrolled
-            ? "border-b border-line bg-bg/80 backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent"
-        }`}
-      >
-        <div className="mx-auto flex h-[72px] max-w-6xl items-center gap-8 px-5 md:px-6">
+    <div className="flex min-h-screen flex-col bg-[#050508]">
+      <header className="sticky top-0 z-50 px-4 pt-4 md:px-6 md:pt-5">
+        <div
+          className={`mx-auto flex h-14 max-w-5xl items-center gap-6 rounded-full border px-4 transition-[background,border-color,box-shadow] duration-300 md:h-[58px] md:px-5 ${
+            scrolled
+              ? "border-white/10 bg-[#0a0812]/85 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+              : "border-white/[0.08] bg-white/[0.03] backdrop-blur-md"
+          }`}
+        >
           <Link href="/" className="flex shrink-0 items-center gap-2.5">
             <LogoMark />
             <span className="text-[13px] font-semibold tracking-[0.18em] text-ink">
@@ -60,24 +59,27 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
           </Link>
 
           <nav className="ml-auto hidden items-center gap-1 md:flex">
-            {LINKS.slice(0, 3).map((l) => (
+            {LINKS.slice(0, 2).map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="rounded-lg px-3.5 py-2 text-[13px] text-mute transition-colors hover:text-ink"
+                className="rounded-full px-3.5 py-2 text-[13px] text-mute transition-colors hover:text-ink"
               >
                 {l.label}
               </a>
             ))}
-            <Link href="/desk" className="btn-primary ml-3 px-4 py-2.5 text-[13px]">
-              Open desk
+            <Link
+              href="/desk"
+              className="ml-2 inline-flex items-center rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#0a0612] transition hover:bg-violet-100"
+            >
+              Get started
             </Link>
           </nav>
 
           <button
             ref={menuBtnRef}
             type="button"
-            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line text-ink md:hidden"
+            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 text-ink md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls={panelId}
@@ -99,7 +101,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
           >
             <button
               type="button"
-              className="absolute inset-0 bg-black/65 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               aria-label="Close menu backdrop"
               onClick={() => setOpen(false)}
             />
@@ -108,20 +110,20 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation"
-              className="absolute right-0 top-0 flex h-full w-[min(100%,320px)] flex-col border-l border-line bg-surface shadow-2xl"
+              className="absolute right-0 top-0 flex h-full w-[min(100%,320px)] flex-col border-l border-white/10 bg-[#0c0a14] shadow-2xl"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 380, damping: 36 }}
             >
-              <div className="flex h-[72px] items-center justify-between border-b border-line px-5">
+              <div className="flex h-[72px] items-center justify-between border-b border-white/10 px-5">
                 <span className="text-[12px] font-semibold tracking-[0.16em] text-ink">
                   MENU
                 </span>
                 <button
                   ref={closeRef}
                   type="button"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-mute hover:text-ink"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/12 text-mute hover:text-ink"
                   aria-label="Close menu"
                   onClick={() => setOpen(false)}
                 >
@@ -134,7 +136,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
                     <a
                       key={l.href}
                       href={l.href}
-                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-surface2"
+                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-violet-500/10"
                       onClick={() => setOpen(false)}
                     >
                       {l.label}
@@ -143,7 +145,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
                     <Link
                       key={l.href}
                       href={l.href}
-                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-surface2"
+                      className="rounded-xl px-3 py-3.5 text-[15px] text-ink hover:bg-violet-500/10"
                       onClick={() => setOpen(false)}
                     >
                       {l.label}
@@ -151,13 +153,13 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
                   ),
                 )}
               </nav>
-              <div className="border-t border-line p-4">
+              <div className="border-t border-white/10 p-4">
                 <Link
                   href="/desk"
-                  className="btn-primary flex w-full items-center justify-center px-4 py-3 text-[14px]"
+                  className="flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-[14px] font-semibold text-[#0a0612]"
                   onClick={() => setOpen(false)}
                 >
-                  Open desk
+                  Get started
                 </Link>
               </div>
             </motion.aside>
@@ -167,7 +169,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-line">
+      <footer className="border-t border-white/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-[12px] text-faint md:px-6">
           <span>NightDesk · XElvolution · MIT</span>
           <div className="flex gap-5">

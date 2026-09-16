@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #07090f;
-  --bg-elevated: #0b0e13;
-  --surface: #121821;
-  --surface-2: #171e2a;
+  --bg: #050508;
+  --bg-elevated: #0a0812;
+  --surface: #121018;
+  --surface-2: #18141f;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.14);
   --ink: #eef2f7;
@@ -12,6 +12,8 @@
   --faint: #5c6678;
   --accent: #4de8ff;
   --accent-dim: rgba(77, 232, 255, 0.12);
+  --violet: #a78bfa;
+  --violet-dim: rgba(139, 92, 246, 0.14);
   --gain: #22c55e;
   --loss: #f43f5e;
   --warn: #eab308;
@@ -36,6 +38,7 @@
   --color-loss: var(--loss);
   --color-warn: var(--warn);
   --color-blue: var(--blue);
+  --color-violet: var(--violet);
   --color-amber: var(--accent);
   --color-amber2: #2bc4db;
   --font-sans: var(--font-plex);
@@ -91,8 +94,8 @@ body {
 
 .card-glow {
   box-shadow:
-    0 0 0 1px rgba(77, 232, 255, 0.12),
-    0 0 40px rgba(77, 232, 255, 0.07),
+    0 0 0 1px rgba(167, 139, 250, 0.14),
+    0 0 40px rgba(139, 92, 246, 0.08),
     0 24px 64px rgba(0, 0, 0, 0.45);
 }
 
@@ -170,4 +173,17 @@ body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
+}
+
+.btn-white {
+  background: #ffffff;
+  color: #0a0612;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: filter 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.btn-white:hover {
+  filter: brightness(0.97);
+  box-shadow: 0 0 32px rgba(167, 139, 250, 0.35);
 }

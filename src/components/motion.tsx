@@ -199,7 +199,7 @@ export function LiftCard({
       whileHover={{
         y: -4,
         boxShadow: glow
-          ? "0 0 0 1px rgba(77,232,255,0.18), 0 0 36px rgba(77,232,255,0.1), 0 20px 48px rgba(0,0,0,0.45)"
+          ? "0 0 0 1px rgba(167,139,250,0.22), 0 0 36px rgba(139,92,246,0.14), 0 20px 48px rgba(0,0,0,0.45)"
           : "0 0 0 1px rgba(255,255,255,0.1), 0 20px 48px rgba(0,0,0,0.45)",
       }}
       transition={{ type: "spring", stiffness: 400, damping: 28 }}

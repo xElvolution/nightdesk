@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const CYCLE_MS = 14000;
+const STATIC_PROGRESS = 0.28;
 
 const STARS = [
   { x: 8, y: 12, s: 1.2, o: 0.55 },
@@ -23,56 +24,29 @@ const STARS = [
   { x: 22, y: 62, s: 0.65, o: 0.3 },
 ];
 
-/** Night-world 3D moon hero: soft rim glow, stars, orbiting rTokens. */
+/**
+ * Night-world 3D moon hero: soft rim glow, stars, orbiting rTokens.
+ * Ambient scene only — never video-player chrome (play/pause, scrubber).
+ */
 export function HeroMoon() {
   const reduce = useReducedMotion();
-  const [playing, setPlaying] = useState(!reduce);
-  const [progress, setProgress] = useState(0);
-  const startRef = useRef(performance.now());
-  const pausedAtRef = useRef(0);
-  const dragging = useRef(false);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(STATIC_PROGRESS);
 
   useEffect(() => {
     if (reduce) {
-      setPlaying(false);
-      setProgress(0.28);
+      setProgress(STATIC_PROGRESS);
       return;
     }
+    const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
-      if (!dragging.current && playing) {
-        const elapsed = now - startRef.current;
-        const p = (elapsed % CYCLE_MS) / CYCLE_MS;
-        setProgress(p);
-      }
+      const elapsed = now - start;
+      setProgress((elapsed % CYCLE_MS) / CYCLE_MS);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [playing, reduce]);
-
-  const seek = useCallback((clientX: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    setProgress(p);
-    startRef.current = performance.now() - p * CYCLE_MS;
-    pausedAtRef.current = p;
-  }, []);
-
-  const toggle = () => {
-    if (reduce) return;
-    setPlaying((v) => {
-      if (v) {
-        pausedAtRef.current = progress;
-        return false;
-      }
-      startRef.current = performance.now() - pausedAtRef.current * CYCLE_MS;
-      return true;
-    });
-  };
+  }, [reduce]);
 
   const phase = progress * Math.PI * 2;
   const floatY = Math.sin(phase) * 8;
@@ -87,6 +61,7 @@ export function HeroMoon() {
           background:
             "radial-gradient(ellipse 70% 55% at 50% 42%, #0c1424 0%, #070a12 48%, #030406 100%)",
         }}
+        aria-hidden
       >
         {/* Atmosphere bloom */}
         <div
@@ -333,85 +308,6 @@ export function HeroMoon() {
           21:00 WAT · overnight
         </div>
       </div>
-
-      <div className="mx-auto mt-4 flex max-w-4xl items-center gap-3 px-1">
-        <button
-          type="button"
-          onClick={toggle}
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-ink backdrop-blur transition hover:border-sky-300/35 hover:bg-sky-400/10"
-          aria-label={playing ? "Pause hero motion" : "Play hero motion"}
-        >
-          {playing ? <PauseIcon /> : <PlayIcon />}
-        </button>
-        <div
-          ref={trackRef}
-          className="group relative h-9 flex-1 cursor-pointer"
-          onPointerDown={(e) => {
-            dragging.current = true;
-            seek(e.clientX);
-            (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-          }}
-          onPointerMove={(e) => {
-            if (!dragging.current) return;
-            seek(e.clientX);
-          }}
-          onPointerUp={() => {
-            dragging.current = false;
-          }}
-          onPointerCancel={() => {
-            dragging.current = false;
-          }}
-          role="slider"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress * 100)}
-          aria-label="Hero motion scrubber"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowRight") {
-              seek(
-                (trackRef.current?.getBoundingClientRect().left ?? 0) +
-                  (progress + 0.05) *
-                    (trackRef.current?.getBoundingClientRect().width ?? 0),
-              );
-            }
-            if (e.key === "ArrowLeft") {
-              seek(
-                (trackRef.current?.getBoundingClientRect().left ?? 0) +
-                  (progress - 0.05) *
-                    (trackRef.current?.getBoundingClientRect().width ?? 0),
-              );
-            }
-          }}
-        >
-          <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 rounded-full bg-white/10" />
-          <div
-            className="absolute left-0 top-1/2 h-[2px] -translate-y-1/2 rounded-full bg-sky-300/75"
-            style={{ width: `${progress * 100}%` }}
-          />
-          <div
-            className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-sky-100/50 bg-sky-200 shadow-[0_0_12px_rgba(186,210,255,0.55)] transition group-hover:scale-110"
-            style={{ left: `${progress * 100}%` }}
-          />
-        </div>
-      </div>
     </div>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden>
-      <path d="M3 1.5v9l8-4.5L3 1.5z" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden>
-      <rect x="2.5" y="1.5" width="2.5" height="9" rx="0.5" />
-      <rect x="7" y="1.5" width="2.5" height="9" rx="0.5" />
-    </svg>
   );
 }

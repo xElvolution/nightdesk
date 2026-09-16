@@ -37,67 +37,61 @@ export function Landing() {
           />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-5 pb-16 pt-14 md:px-6 md:pb-24 md:pt-20">
+        <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-8 md:px-6 md:pb-28 md:pt-12">
           <HeroStagger>
             <HeroItem>
-              <div className="inline-flex items-center gap-2.5 rounded-full border border-violet-400/20 bg-violet-500/5 px-3.5 py-1.5 backdrop-blur">
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-violet-400/15 bg-violet-500/[0.04] px-3 py-1">
                 <PulseDot className="bg-violet-400" />
-                <span className="text-[11px] font-medium tracking-[0.14em] text-violet-200/80 uppercase">
+                <span className="text-[11px] font-medium tracking-[0.16em] text-violet-200/75 uppercase">
                   Overnight desk for Bitget rTokens
                 </span>
               </div>
             </HeroItem>
 
-            <HeroItem className="mt-8 max-w-3xl md:mt-10">
-              <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.035em] text-ink sm:text-5xl md:text-[60px] md:leading-[1.02]">
+            <HeroItem className="mt-9 max-w-3xl md:mt-12">
+              <h1 className="text-[40px] font-semibold leading-[1.04] tracking-[-0.04em] text-ink sm:text-5xl md:text-[64px] md:leading-[1.0]">
                 US cash closes at 21:00 in Lagos.
-                <span className="mt-2 block bg-gradient-to-r from-violet-200 via-fuchsia-200 to-violet-300 bg-clip-text text-transparent md:mt-3">
+                <span className="mt-2.5 block bg-gradient-to-r from-violet-200 via-fuchsia-200 to-violet-300 bg-clip-text text-transparent md:mt-3">
                   Your rTokens do not.
                 </span>
               </h1>
             </HeroItem>
 
-            <HeroItem className="mt-6 max-w-xl md:mt-7">
-              <p className="text-[16px] leading-7 text-mute md:text-[17px] md:leading-8">
+            <HeroItem className="mt-6 max-w-xl md:mt-8">
+              <p className="text-[15px] leading-7 text-mute md:text-[17px] md:leading-8">
                 Import the Bitget book. Run research, sentiment, risk, and
                 execution. Submit one risk-gated rebalance. Every signal closes
                 as a sized action with a receipt.
               </p>
             </HeroItem>
 
-            <HeroItem className="mt-9 md:mt-10">
-              <div className="flex flex-wrap items-center gap-3">
-                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    href="/enter"
-                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-[14px] font-semibold text-[#0a0612] shadow-[0_0_32px_rgba(167,139,250,0.25)] transition hover:shadow-[0_0_40px_rgba(167,139,250,0.4)]"
+            <HeroItem className="mt-10 md:mt-12">
+              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+                <Link
+                  href="/enter"
+                  className="inline-flex h-11 items-center rounded-full bg-white px-6 text-[13px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90 active:translate-y-px"
+                >
+                  Open desk
+                </Link>
+                <a
+                  href="#how"
+                  className="group inline-flex items-center gap-1.5 text-[13px] font-medium tracking-[-0.01em] text-mute transition duration-200 hover:text-ink"
+                >
+                  How it works
+                  <span
+                    aria-hidden
+                    className="translate-y-px text-[12px] transition-transform duration-200 group-hover:translate-x-0.5"
                   >
-                    Open desk
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <Link
-                    href="/enter"
-                    className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-[14px] font-medium text-ink transition hover:border-violet-400/35 hover:bg-violet-500/10"
-                  >
-                    Sign in
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <a
-                    href="#how"
-                    className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-[14px] font-medium text-ink transition hover:border-violet-400/35 hover:bg-violet-500/10"
-                  >
-                    How it works
-                  </a>
-                </motion.div>
+                    →
+                  </span>
+                </a>
               </div>
-              <p className="mt-5 text-[12px] text-violet-200/70">
+              <p className="mt-6 text-[12px] tracking-[-0.01em] text-violet-200/55">
                 4 operators on desk tonight · books active across WAT
               </p>
             </HeroItem>
 
-            <HeroItem className="mt-14 md:mt-16" scale>
+            <HeroItem className="mt-16 md:mt-20" scale>
               <HeroPortal />
             </HeroItem>
           </HeroStagger>
@@ -270,23 +264,25 @@ export function Landing() {
               Import holdings. Run the agent cycle. Submit one risk-gated
               rebalance before the next cash open.
             </p>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  href="/enter"
-                  className="inline-flex items-center rounded-full bg-white px-8 py-3.5 text-[14px] font-semibold text-[#0a0612] shadow-[0_0_36px_rgba(167,139,250,0.28)]"
+            <div className="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-8">
+              <Link
+                href="/enter"
+                className="inline-flex h-11 items-center rounded-full bg-white px-6 text-[13px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90 active:translate-y-px"
+              >
+                Open desk
+              </Link>
+              <a
+                href="/books/holdings.template.csv"
+                className="group inline-flex items-center gap-1.5 text-[13px] font-medium tracking-[-0.01em] text-mute transition duration-200 hover:text-ink"
+              >
+                Holdings CSV template
+                <span
+                  aria-hidden
+                  className="translate-y-px text-[12px] transition-transform duration-200 group-hover:translate-x-0.5"
                 >
-                  Open desk
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <a
-                  href="/books/holdings.template.csv"
-                  className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.03] px-7 py-3.5 text-[14px] font-medium text-ink transition hover:border-violet-400/35"
-                >
-                  Holdings CSV template
-                </a>
-              </motion.div>
+                  →
+                </span>
+              </a>
             </div>
           </Reveal>
         </div>

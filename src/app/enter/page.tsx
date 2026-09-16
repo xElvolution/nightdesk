@@ -106,7 +106,7 @@ function EnterForm() {
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-[14px] font-semibold text-[#0a0612] disabled:opacity-50"
+          className="inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-5 text-[13px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90 active:translate-y-px disabled:opacity-50"
         >
           {busy ? "Opening desk..." : "Open desk"}
         </button>

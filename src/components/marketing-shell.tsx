@@ -43,7 +43,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#050508]">
-      <header className="sticky top-0 z-50 px-4 pt-4 md:px-6 md:pt-5">
+      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6 md:pt-5">
         <div
           className={`mx-auto flex h-14 max-w-5xl items-center gap-6 rounded-full border px-4 transition-[background,border-color,box-shadow] duration-300 md:h-[58px] md:px-5 ${
             scrolled
@@ -70,7 +70,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
             ))}
             <Link
               href="/enter"
-              className="ml-2 inline-flex items-center rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-[#0a0612] transition hover:bg-violet-100"
+              className="ml-2 inline-flex h-9 items-center rounded-full bg-white px-4 text-[12px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90"
             >
               Open desk
             </Link>
@@ -156,7 +156,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               <div className="border-t border-white/10 p-4">
                 <Link
                   href="/enter"
-                  className="flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-[14px] font-semibold text-[#0a0612]"
+                  className="flex h-11 w-full items-center justify-center rounded-full bg-white px-4 text-[13px] font-semibold tracking-[-0.01em] text-[#0a0612] transition duration-200 hover:bg-white/90"
                   onClick={() => setOpen(false)}
                 >
                   Open desk
@@ -167,7 +167,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pt-20 md:pt-24">{children}</main>
 
       <footer className="border-t border-white/[0.06]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-[12px] text-faint md:px-6">
@@ -177,7 +177,7 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
               Product
             </a>
             <Link href="/enter" className="hover:text-mute">
-              Sign in
+              Open desk
             </Link>
             <a
               href="https://github.com/xElvolution/nightdesk"

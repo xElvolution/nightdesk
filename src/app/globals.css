@@ -180,10 +180,9 @@ body {
   color: #0a0612;
   font-weight: 600;
   border-radius: 9999px;
-  transition: filter 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  transition: opacity 160ms ease, transform 160ms ease, background-color 160ms ease;
 }
 
 .btn-white:hover {
-  filter: brightness(0.97);
-  box-shadow: 0 0 32px rgba(167, 139, 250, 0.35);
+  opacity: 0.92;
 }
